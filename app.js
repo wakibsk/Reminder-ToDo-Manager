@@ -7,6 +7,8 @@ const taskForm = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 const searchInput = document.getElementById("search-input");
+const taskSort = document.getElementById("task-sort");
+const priorityFilter = document.getElementById("priority-filter");
 const emptyState = document.getElementById("empty-state");
 const priorityInput = document.getElementById("task-priority");
 const dueDateInput = document.getElementById("task-due-date");
@@ -129,14 +131,44 @@ function renderTasks() {
 
 const searchedTasks = findTasks(tasks, keyword);
 
+// STUDENT 1: Filter tasks by status and priority.
+const selectedPriority = priorityFilter.value;
+
 const visibleTasks = searchedTasks.filter(function (task) {
   const matchesFilter =
     currentFilter === "all" ||
     (currentFilter === "pending" && !task.completed) ||
     (currentFilter === "completed" && task.completed);
 
-  return matchesFilter;
+  const matchesPriority =
+    selectedPriority === "all" ||
+    (task.priority || "medium") === selectedPriority;
+
+  return matchesFilter && matchesPriority;
 });
+const sortOption = taskSort.value;
+
+if (sortOption === "priority") {
+  const priorityOrder = {
+    high: 3,
+    medium: 2,
+    low: 1
+  };
+
+  visibleTasks.sort(function (a, b) {
+    return (
+      (priorityOrder[b.priority || "medium"] || 2) -
+      (priorityOrder[a.priority || "medium"] || 2)
+    );
+  });
+} else if (sortOption === "due-date") {
+  visibleTasks.sort(function (a, b) {
+    if (!a.dueDate) return 1;
+    if (!b.dueDate) return -1;
+
+    return a.dueDate.localeCompare(b.dueDate);
+  });
+}
 
   taskList.innerHTML = "";
 
@@ -252,7 +284,34 @@ const visibleTasks = searchedTasks.filter(function (task) {
     tasks.filter(task => task.completed).length;
   document.getElementById("overdue-count").textContent =
     tasks.filter(isOverdue).length;
-  document.getElementById("task-count-label").textContent =
+  // STUDENT 1: Calculate task counts by priority.
+  // STUDENT 1: Calculate task counts and completion by priority.
+const highTasks = tasks.filter(task => task.priority === "high");
+const mediumTasks = tasks.filter(
+  task => !task.priority || task.priority === "medium"
+);
+const lowTasks = tasks.filter(task => task.priority === "low");
+
+// Display total tasks in each priority.
+document.getElementById("high-priority-count").textContent =
+  highTasks.length;
+
+document.getElementById("medium-priority-count").textContent =
+  mediumTasks.length;
+
+document.getElementById("low-priority-count").textContent =
+  lowTasks.length;
+
+// Display completed tasks in each priority.
+document.getElementById("high-priority-completed").textContent =
+  `${highTasks.filter(task => task.completed).length} of ${highTasks.length} completed`;
+
+document.getElementById("medium-priority-completed").textContent =
+  `${mediumTasks.filter(task => task.completed).length} of ${mediumTasks.length} completed`;
+
+document.getElementById("low-priority-completed").textContent =
+  `${lowTasks.filter(task => task.completed).length} of ${lowTasks.length} completed`;
+document.getElementById("task-count-label").textContent =
     visibleTasks.length + (visibleTasks.length === 1 ? " task" : " tasks");
 
   const total = tasks.length;
@@ -288,8 +347,15 @@ document.querySelectorAll(".filter-button").forEach(function (button) {
 
 // Update the displayed tasks as the user types.
 searchInput.addEventListener("input", renderTasks);
+taskSort.addEventListener("change", function () {
+  renderTasks();
+});
 
-''
+// Update displayed tasks when priority filter changes.
+priorityFilter.addEventListener("change", function () {
+  renderTasks();
+});
+
 clearCompletedButton.addEventListener("click", function () {
   const completedCount = tasks.filter(function (task) {
     return task.completed;
