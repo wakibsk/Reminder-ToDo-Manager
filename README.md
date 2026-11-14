@@ -1,7 +1,7 @@
 # TaskFlow - To-Do List and Task Management System
 
 ## Project description
-TaskFlow is a simple browser-based task manager built with HTML, CSS and JavaScript. Users can add, view, complete, delete and search tasks. Tasks are saved in the browser using LocalStorage.
+TaskFlow is an interactive task organizer designed to help users manage their daily activities efficiently. Developed with HTML, CSS and JavaScript, it provides task tracking, priority selection, deadline management and progress monitoring. Browser LocalStorage ensures that tasks remain saved between sessions.
 
 ## Objectives
 - Build a functional front-end web application.
