@@ -8,6 +8,7 @@ const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 const searchInput = document.getElementById("search-input");
 const taskSort = document.getElementById("task-sort");
+const priorityFilter = document.getElementById("priority-filter");
 const emptyState = document.getElementById("empty-state");
 const priorityInput = document.getElementById("task-priority");
 const dueDateInput = document.getElementById("task-due-date");
@@ -130,13 +131,20 @@ function renderTasks() {
 
 const searchedTasks = findTasks(tasks, keyword);
 
+// STUDENT 1: Filter tasks by status and priority.
+const selectedPriority = priorityFilter.value;
+
 const visibleTasks = searchedTasks.filter(function (task) {
   const matchesFilter =
     currentFilter === "all" ||
     (currentFilter === "pending" && !task.completed) ||
     (currentFilter === "completed" && task.completed);
 
-  return matchesFilter;
+  const matchesPriority =
+    selectedPriority === "all" ||
+    (task.priority || "medium") === selectedPriority;
+
+  return matchesFilter && matchesPriority;
 });
 const sortOption = taskSort.value;
 
@@ -340,6 +348,11 @@ document.querySelectorAll(".filter-button").forEach(function (button) {
 // Update the displayed tasks as the user types.
 searchInput.addEventListener("input", renderTasks);
 taskSort.addEventListener("change", function () {
+  renderTasks();
+});
+
+// Update displayed tasks when priority filter changes.
+priorityFilter.addEventListener("change", function () {
   renderTasks();
 });
 
