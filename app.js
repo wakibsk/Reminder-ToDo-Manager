@@ -11,6 +11,7 @@ const emptyState = document.getElementById("empty-state");
 const priorityInput = document.getElementById("task-priority");
 const dueDateInput = document.getElementById("task-due-date");
 const themeToggle = document.getElementById("theme-toggle");
+const clearCompletedButton = document.getElementById("clear-completed-button");
 const suggestionsBox = document.getElementById("task-suggestions");
 const starterSuggestions = [
   "Review today's priorities",
@@ -288,5 +289,35 @@ document.querySelectorAll(".filter-button").forEach(function (button) {
 // Update the displayed tasks as the user types.
 searchInput.addEventListener("input", renderTasks);
 
-// Initial display when the page opens.
+''
+clearCompletedButton.addEventListener("click", function () {
+  const completedCount = tasks.filter(function (task) {
+    return task.completed;
+  }).length;
+
+  if (completedCount === 0) {
+    alert("There are no completed tasks to clear.");
+    return;
+  }
+
+  const confirmation = confirm(
+    'Are you sure you want to delete ' + completedCount + ' completed task(s)?'
+  );
+
+  if (!confirmation) {
+    return;
+  }
+
+  // Keep only pending tasks.
+  tasks = tasks.filter(function (task) {
+    return !task.completed;
+  });
+
+  saveTasksToBrowser(tasks);
+  renderTasks();
+
+  alert("Completed tasks cleared successfully!");
+});
+
+// Initial display when the application opens.
 renderTasks();

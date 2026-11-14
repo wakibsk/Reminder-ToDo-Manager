@@ -55,14 +55,20 @@
     </section>
 
     <section class="toolbar" aria-label="Task filters">
-      <div class="filter-group">
-        <button class="filter-button active" data-filter="all">All</button>
-        <button class="filter-button" data-filter="pending">Pending</button>
-        <button class="filter-button" data-filter="completed">Completed</button>
-      </div>
-      <input id="search-input" class="search-input" type="search"
-             placeholder="Search tasks..." aria-label="Search tasks">
-    </section>
+  <div class="filter-group">
+    <button class="filter-button active" data-filter="all">All</button>
+    <button class="filter-button" data-filter="pending">Pending</button>
+    <button class="filter-button" data-filter="completed">Completed</button>
+  </div>
+
+  
+  <button id="clear-completed-button" class="clear-completed-button" type="button">
+    Clear Completed
+  </button>
+
+  <input id="search-input" class="search-input" type="search"
+         placeholder="Search tasks..." aria-label="Search tasks">
+</section>
 
     <section class="summary-grid" aria-label="Task summary">
       <article class="summary-card">
