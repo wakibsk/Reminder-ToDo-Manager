@@ -276,6 +276,15 @@ if (sortOption === "priority") {
     tasks.filter(task => task.completed).length;
   document.getElementById("overdue-count").textContent =
     tasks.filter(isOverdue).length;
+  // STUDENT 1: Calculate task counts by priority.
+  document.getElementById("high-priority-count").textContent =
+    tasks.filter(task => task.priority === "high").length;
+
+  document.getElementById("medium-priority-count").textContent =
+    tasks.filter(task => !task.priority || task.priority === "medium").length;
+
+  document.getElementById("low-priority-count").textContent =
+    tasks.filter(task => task.priority === "low").length;
   document.getElementById("task-count-label").textContent =
     visibleTasks.length + (visibleTasks.length === 1 ? " task" : " tasks");
 

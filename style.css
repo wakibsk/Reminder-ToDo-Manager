@@ -884,3 +884,72 @@ body[data-theme="dark"] .task-sort option {
   border-color: #6366f1;
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
 }
+/* STUDENT 1: Priority Breakdown Dashboard */
+
+.priority-summary {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--card-bg, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.priority-summary h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: var(--text-color, #111827);
+}
+
+.priority-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.priority-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--background-color, #f3f4f6);
+}
+
+.priority-summary-card span {
+  font-size: 13px;
+  color: var(--text-color, #6b7280);
+}
+
+.priority-summary-card strong {
+  font-size: 25px;
+  color: var(--text-color, #111827);
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 600px) {
+  .priority-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* STUDENT 1: Dark mode styling for Priority Breakdown */
+
+body[data-theme="dark"] .priority-summary {
+  background: #1f2937;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+body[data-theme="dark"] .priority-summary h3 {
+  color: #f9fafb;
+}
+
+body[data-theme="dark"] .priority-summary-card {
+  background: #374151;
+}
+
+body[data-theme="dark"] .priority-summary-card span {
+  color: #d1d5db;
+}
+
+body[data-theme="dark"] .priority-summary-card strong {
+  color: #ffffff;
+}
