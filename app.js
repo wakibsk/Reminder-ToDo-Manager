@@ -97,6 +97,15 @@ taskForm.addEventListener("submit", function (event) {
     return;
   }
 
+  const duplicateTask = tasks.some(function (task) {
+  return task.title.toLowerCase() === title.toLowerCase();
+});
+
+if (duplicateTask) {
+  alert("This task already exists!");
+  return;
+}
+
   tasks.push({
     id: Date.now(),
     title: title,
