@@ -11,6 +11,7 @@ const emptyState = document.getElementById("empty-state");
 const priorityInput = document.getElementById("task-priority");
 const dueDateInput = document.getElementById("task-due-date");
 const themeToggle = document.getElementById("theme-toggle");
+const clearCompletedButton = document.getElementById("clear-completed-button");
 const suggestionsBox = document.getElementById("task-suggestions");
 const starterSuggestions = [
   "Review today's priorities",
@@ -97,6 +98,15 @@ taskForm.addEventListener("submit", function (event) {
     return;
   }
 
+  const duplicateTask = tasks.some(function (task) {
+  return task.title.toLowerCase() === title.toLowerCase();
+});
+
+if (duplicateTask) {
+  alert("This task already exists!");
+  return;
+}
+
   tasks.push({
     id: Date.now(),
     title: title,
@@ -117,15 +127,16 @@ taskForm.addEventListener("submit", function (event) {
 function renderTasks() {
   const keyword = searchInput.value.trim().toLowerCase();
 
-  const visibleTasks = tasks.filter(function (task) {
-    const matchesFilter =
-      currentFilter === "all" ||
-      (currentFilter === "pending" && !task.completed) ||
-      (currentFilter === "completed" && task.completed);
+const searchedTasks = findTasks(tasks, keyword);
 
-    const matchesSearch = task.title.toLowerCase().includes(keyword);
-    return matchesFilter && matchesSearch;
-  });
+const visibleTasks = searchedTasks.filter(function (task) {
+  const matchesFilter =
+    currentFilter === "all" ||
+    (currentFilter === "pending" && !task.completed) ||
+    (currentFilter === "completed" && task.completed);
+
+  return matchesFilter;
+});
 
   taskList.innerHTML = "";
 
@@ -192,15 +203,30 @@ function renderTasks() {
       editor.select();
 
       const saveEdit = function () {
-        const updatedTitle = editor.value.trim();
-        if (!updatedTitle) {
-          editor.focus();
-          return;
-        }
-        task.title = updatedTitle;
-        saveTasksToBrowser(tasks);
-        renderTasks();
-      };
+  const updatedTitle = editor.value.trim();
+
+  if (!updatedTitle) {
+    alert("Task title cannot be empty.");
+    editor.focus();
+    return;
+  }
+
+  const duplicateTask = tasks.some(function (item) {
+    return item.id !== task.id &&
+      item.title.toLowerCase() === updatedTitle.toLowerCase();
+  });
+
+  if (duplicateTask) {
+    alert("Another task with this name already exists!");
+    editor.focus();
+    return;
+  }
+
+  task.title = updatedTitle;
+  saveTasksToBrowser(tasks);
+  renderTasks();
+};
+
       editButton.onclick = saveEdit;
       editor.addEventListener("keydown", function (event) {
         if (event.key === "Enter") saveEdit();
@@ -263,5 +289,35 @@ document.querySelectorAll(".filter-button").forEach(function (button) {
 // Update the displayed tasks as the user types.
 searchInput.addEventListener("input", renderTasks);
 
-// Initial display when the page opens.
+''
+clearCompletedButton.addEventListener("click", function () {
+  const completedCount = tasks.filter(function (task) {
+    return task.completed;
+  }).length;
+
+  if (completedCount === 0) {
+    alert("There are no completed tasks to clear.");
+    return;
+  }
+
+  const confirmation = confirm(
+    'Are you sure you want to delete ' + completedCount + ' completed task(s)?'
+  );
+
+  if (!confirmation) {
+    return;
+  }
+
+  // Keep only pending tasks.
+  tasks = tasks.filter(function (task) {
+    return !task.completed;
+  });
+
+  saveTasksToBrowser(tasks);
+  renderTasks();
+
+  alert("Completed tasks cleared successfully!");
+});
+
+// Initial display when the application opens.
 renderTasks();
