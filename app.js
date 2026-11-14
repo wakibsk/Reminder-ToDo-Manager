@@ -7,6 +7,7 @@ const taskForm = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 const searchInput = document.getElementById("search-input");
+const taskSort = document.getElementById("task-sort");
 const emptyState = document.getElementById("empty-state");
 const priorityInput = document.getElementById("task-priority");
 const dueDateInput = document.getElementById("task-due-date");
@@ -137,6 +138,29 @@ const visibleTasks = searchedTasks.filter(function (task) {
 
   return matchesFilter;
 });
+const sortOption = taskSort.value;
+
+if (sortOption === "priority") {
+  const priorityOrder = {
+    high: 3,
+    medium: 2,
+    low: 1
+  };
+
+  visibleTasks.sort(function (a, b) {
+    return (
+      (priorityOrder[b.priority || "medium"] || 2) -
+      (priorityOrder[a.priority || "medium"] || 2)
+    );
+  });
+} else if (sortOption === "due-date") {
+  visibleTasks.sort(function (a, b) {
+    if (!a.dueDate) return 1;
+    if (!b.dueDate) return -1;
+
+    return a.dueDate.localeCompare(b.dueDate);
+  });
+}
 
   taskList.innerHTML = "";
 
@@ -288,8 +312,10 @@ document.querySelectorAll(".filter-button").forEach(function (button) {
 
 // Update the displayed tasks as the user types.
 searchInput.addEventListener("input", renderTasks);
+taskSort.addEventListener("change", function () {
+  renderTasks();
+});
 
-''
 clearCompletedButton.addEventListener("click", function () {
   const completedCount = tasks.filter(function (task) {
     return task.completed;
