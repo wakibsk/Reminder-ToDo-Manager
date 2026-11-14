@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow | To-Do Manager</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="eyebrow">Make space for what matters</p>
+      <h1>
+        <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="bell-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="100%" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bell-gradient)" />
+          <circle cx="32" cy="15.5" r="2.5" fill="#fff" />
+          <path d="M32 17C24.5 17 20 22.5 20 29.5v9l-3.5 3.5c-.5.5-.2 1.5.5 1.5h30c.7 0 1-.9.5-1.5L44 38.5v-9C44 22.5 39.5 17 32 17Z" fill="#fff" />
+          <path d="M28 45.5a4 4 0 0 0 8 0Z" fill="#fff" />
+        </svg>
+        ReminderList <span>.</span>
+      </h1>
+      <p class="subtitle">Plan your day, one task at a time.</p>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">🌙 Dark mode</button>
+    </header>
+
+    <section class="composer card" aria-label="Add a task">
+      <form id="task-form">
+        <label for="task-input">What do you need to get done?</label>
+        <div class="input-row">
+          <input id="task-input" type="text" maxlength="100"
+                 placeholder="e.g. Finish DBMS assignment" autocomplete="off" required>
+          <button class="primary-button" type="submit">+ Add task</button>
+        </div>
+        <div id="task-suggestions" class="task-suggestions" aria-label="Task suggestions" hidden></div>
+        <div class="task-options">
+          <label class="option-field" for="task-priority">Priority
+            <select id="task-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+          <label class="option-field" for="task-due-date">Due date
+            <input id="task-due-date" type="date">
+          </label>
+        </div>
+      </form>
+    </section>
+
+    <section class="toolbar" aria-label="Task filters">
+      <div class="filter-group">
+        <button class="filter-button active" data-filter="all">All</button>
+        <button class="filter-button" data-filter="pending">Pending</button>
+        <button class="filter-button" data-filter="completed">Completed</button>
+      </div>
+      <input id="search-input" class="search-input" type="search"
+             placeholder="Search tasks..." aria-label="Search tasks">
+    </section>
+
+    <section class="summary-grid" aria-label="Task summary">
+      <article class="summary-card">
+        <span class="summary-label">Total tasks</span>
+        <strong id="total-count">0</strong>
+      </article>
+      <article class="summary-card">
+        <span class="summary-label">Pending</span>
+        <strong id="pending-count">0</strong>
+      </article>
+      <article class="summary-card">
+        <span class="summary-label">Completed</span>
+        <strong id="completed-count">0</strong>
+      </article>
+      <article class="summary-card">
+        <span class="summary-label">Overdue</span>
+        <strong id="overdue-count">0</strong>
+      </article>
+    </section>
+
+    <section class="progress-card" aria-label="Task completion progress">
+      <div class="progress-copy"><strong>Your progress</strong><span id="progress-label">0% complete</span></div>
+      <div class="progress-track" role="progressbar" aria-label="Tasks completed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span id="progress-fill"></span>
+      </div>
+    </section>
+
+    <section class="task-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR WORKSPACE</p>
+          <h2>My tasks</h2>
+        </div>
+        <span id="task-count-label" class="count-label">0 tasks</span>
+      </div>
+      <ul id="task-list" class="task-list" aria-live="polite"></ul>
+      <p id="empty-state" class="empty-state">
+        <span class="empty-icon">✦</span>
+        <strong>Nothing here yet</strong>
+        <span>Add a task above and it will appear here.</span>
+      </p>
+    </section>
+
+    <footer>TaskFlow · Your tasks stay saved in this browser.</footer>
+  </main>
+
+  <!-- Student 2's helper functions must load before Student 1's app.js. -->
+  <script src="task_actions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
