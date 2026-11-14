@@ -953,3 +953,14 @@ body[data-theme="dark"] .priority-summary-card span {
 body[data-theme="dark"] .priority-summary-card strong {
   color: #ffffff;
 }
+/* STUDENT 1: Priority completion statistics */
+.priority-summary-card small {
+  font-size: 12px;
+  color: var(--text-color, #6b7280);
+  opacity: 0.8;
+}
+
+body[data-theme="dark"] .priority-summary-card small {
+  color: #d1d5db;
+  opacity: 1;
+}

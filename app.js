@@ -277,15 +277,33 @@ if (sortOption === "priority") {
   document.getElementById("overdue-count").textContent =
     tasks.filter(isOverdue).length;
   // STUDENT 1: Calculate task counts by priority.
-  document.getElementById("high-priority-count").textContent =
-    tasks.filter(task => task.priority === "high").length;
+  // STUDENT 1: Calculate task counts and completion by priority.
+const highTasks = tasks.filter(task => task.priority === "high");
+const mediumTasks = tasks.filter(
+  task => !task.priority || task.priority === "medium"
+);
+const lowTasks = tasks.filter(task => task.priority === "low");
 
-  document.getElementById("medium-priority-count").textContent =
-    tasks.filter(task => !task.priority || task.priority === "medium").length;
+// Display total tasks in each priority.
+document.getElementById("high-priority-count").textContent =
+  highTasks.length;
 
-  document.getElementById("low-priority-count").textContent =
-    tasks.filter(task => task.priority === "low").length;
-  document.getElementById("task-count-label").textContent =
+document.getElementById("medium-priority-count").textContent =
+  mediumTasks.length;
+
+document.getElementById("low-priority-count").textContent =
+  lowTasks.length;
+
+// Display completed tasks in each priority.
+document.getElementById("high-priority-completed").textContent =
+  `${highTasks.filter(task => task.completed).length} of ${highTasks.length} completed`;
+
+document.getElementById("medium-priority-completed").textContent =
+  `${mediumTasks.filter(task => task.completed).length} of ${mediumTasks.length} completed`;
+
+document.getElementById("low-priority-completed").textContent =
+  `${lowTasks.filter(task => task.completed).length} of ${lowTasks.length} completed`;
+document.getElementById("task-count-label").textContent =
     visibleTasks.length + (visibleTasks.length === 1 ? " task" : " tasks");
 
   const total = tasks.length;
