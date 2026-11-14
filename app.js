@@ -202,15 +202,30 @@ const visibleTasks = searchedTasks.filter(function (task) {
       editor.select();
 
       const saveEdit = function () {
-        const updatedTitle = editor.value.trim();
-        if (!updatedTitle) {
-          editor.focus();
-          return;
-        }
-        task.title = updatedTitle;
-        saveTasksToBrowser(tasks);
-        renderTasks();
-      };
+  const updatedTitle = editor.value.trim();
+
+  if (!updatedTitle) {
+    alert("Task title cannot be empty.");
+    editor.focus();
+    return;
+  }
+
+  const duplicateTask = tasks.some(function (item) {
+    return item.id !== task.id &&
+      item.title.toLowerCase() === updatedTitle.toLowerCase();
+  });
+
+  if (duplicateTask) {
+    alert("Another task with this name already exists!");
+    editor.focus();
+    return;
+  }
+
+  task.title = updatedTitle;
+  saveTasksToBrowser(tasks);
+  renderTasks();
+};
+
       editButton.onclick = saveEdit;
       editor.addEventListener("keydown", function (event) {
         if (event.key === "Enter") saveEdit();
