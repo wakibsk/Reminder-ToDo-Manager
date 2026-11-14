@@ -117,15 +117,16 @@ taskForm.addEventListener("submit", function (event) {
 function renderTasks() {
   const keyword = searchInput.value.trim().toLowerCase();
 
-  const visibleTasks = tasks.filter(function (task) {
-    const matchesFilter =
-      currentFilter === "all" ||
-      (currentFilter === "pending" && !task.completed) ||
-      (currentFilter === "completed" && task.completed);
+const searchedTasks = findTasks(tasks, keyword);
 
-    const matchesSearch = task.title.toLowerCase().includes(keyword);
-    return matchesFilter && matchesSearch;
-  });
+const visibleTasks = searchedTasks.filter(function (task) {
+  const matchesFilter =
+    currentFilter === "all" ||
+    (currentFilter === "pending" && !task.completed) ||
+    (currentFilter === "completed" && task.completed);
+
+  return matchesFilter;
+});
 
   taskList.innerHTML = "";
 
